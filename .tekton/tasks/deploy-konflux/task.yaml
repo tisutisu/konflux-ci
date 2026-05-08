@@ -172,30 +172,30 @@ spec:
           E2E_KIND_CLUSTER="$(params.kind-cluster-name)" \
           E2E_KONFLUX_READY_TIMEOUT="$(params.konflux-ready-timeout)" \
           bash scripts/operator-e2e/tekton-deploy-prep.sh /mnt/konflux-ci/repo
-    - name: push-operator-pkg-manifests-oci
-      image: quay.io/konflux-ci/task-runner:0.2.0@sha256:ba65585f5c8b0a74dc51590e95961765322427d1d62ccd4eb742ff0442291985
-      workingDir: /mnt/konflux-ci/repo
-      volumeMounts:
-        - name: repo
-          mountPath: /mnt/konflux-ci/repo
-        - name: e2e-shared
-          mountPath: /mnt/e2e-shared
-        - name: oci-registry-creds
-          mountPath: /mnt/oci-registry/.docker/config.json
-          subPath: oci-storage-dockerconfigjson
-          readOnly: true
-      env:
-        - name: DOCKER_CONFIG
-          value: /mnt/oci-registry/.docker
-        - name: E2E_OCI_CONTAINER_REPO
-          value: $(params.oci-container-repo)
-        - name: E2E_PIPELINE_RUN_NAME
-          value: $(params.pipeline-run-name)
-      script: |
-        #!/bin/bash
-        set -euo pipefail
-        cd /mnt/konflux-ci/repo
-        exec bash scripts/operator-e2e/tekton-push-operator-pkg-manifests-oci.sh /mnt/konflux-ci/repo
+    # - name: push-operator-pkg-manifests-oci
+    #   image: quay.io/konflux-ci/task-runner:0.2.0@sha256:ba65585f5c8b0a74dc51590e95961765322427d1d62ccd4eb742ff0442291985
+    #   workingDir: /mnt/konflux-ci/repo
+    #   volumeMounts:
+    #     - name: repo
+    #       mountPath: /mnt/konflux-ci/repo
+    #     - name: e2e-shared
+    #       mountPath: /mnt/e2e-shared
+    #     - name: oci-registry-creds
+    #       mountPath: /mnt/oci-registry/.docker/config.json
+    #       subPath: oci-storage-dockerconfigjson
+    #       readOnly: true
+    #   env:
+    #     - name: DOCKER_CONFIG
+    #       value: /mnt/oci-registry/.docker
+    #     - name: E2E_OCI_CONTAINER_REPO
+    #       value: $(params.oci-container-repo)
+    #     - name: E2E_PIPELINE_RUN_NAME
+    #       value: $(params.pipeline-run-name)
+    #   script: |
+    #     #!/bin/bash
+    #     set -euo pipefail
+    #     cd /mnt/konflux-ci/repo
+    #     exec bash scripts/operator-e2e/tekton-push-operator-pkg-manifests-oci.sh /mnt/konflux-ci/repo
     - name: deploy-operator-and-wait
       computeResources:
         requests:
